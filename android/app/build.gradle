@@ -130,6 +130,10 @@ def reactNativeArchitectures() {
 }
 
 android {
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+    }
+
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
