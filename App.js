@@ -27,25 +27,41 @@ const App = () => {
   } = useGuardSecure();
 
   const onPressLogin = async () => {
-    const res = await login({
-      pin: loginPin,
-      customerId: '1',
-      rememberPinActive: false,
-      guardSdkVersion: '2.5.0'
-    });
-    setResponse(JSON.stringify(res));
+    setResponse('Please wait...');
+    try {
+      const res = await login({
+        pin: loginPin,
+        customerId: '1',
+        rememberPinActive: false,
+        guardSdkVersion: '2.5.0',
+      });
+      setResponse(JSON.stringify(res));
+    } catch (error) {
+      setResponse('ERROR :/');
+    }
   };
   const onPressCreatePin = async () => {
-    const res = await createPin({pin: '123456', customerId: '1'});
-    setResponse(JSON.stringify(res));
+    setResponse('Please wait...');
+    try {
+      const res = await createPin({pin: '123456', customerId: '1'});
+      setResponse(JSON.stringify(res));
+    } catch (error) {
+      setResponse('ERROR :/');
+    }
   };
-  const onPressChangePin = async () => {
-    const res = await changePin({
-      pin: '123456',
-      newPin: '121212',
-      customerId: '1',
-    });
-    setResponse(JSON.stringify(res));
+  const onPressApproveTransaction = async () => {
+    setResponse('Please wait...');
+    try {
+      const res = await approveTransaction({
+        pin: '123456',
+        customerId: '1',
+        canceled: false,
+        summaryData: "{ 'key': 'value' }",
+      });
+      setResponse(JSON.stringify(res));
+    } catch (error) {
+      setResponse('ERROR :/');
+    }
   };
 
   return (
@@ -80,13 +96,7 @@ const App = () => {
           />
         </View>
         <View>
-          <Button onPress={onPressChangePin} title="Change Pin" />
-          <TextInput
-            style={styles.pinInput}
-            value={newPin}
-            onChange={setNewPin}
-            maxLength={8}
-          />
+          <Button onPress={onPressApproveTransaction} title="Approve Trn." />
         </View>
       </View>
 
