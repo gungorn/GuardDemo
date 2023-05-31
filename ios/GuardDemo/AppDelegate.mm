@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <abtguard/Guard.h>
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -54,6 +55,14 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  //GUARD-INIT START
+  NSLog(@"initGuard START");
+  Guard *guard = [Guard new];
+  [guard initGuard];
+  NSLog(@"initGuard END");
+  //GUARD-INIT END
+  
   return YES;
 }
 
