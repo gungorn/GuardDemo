@@ -1,111 +1,143 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {useGuardSecure} from '@abtguard/guard';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const [response, setResponse] = React.useState('');
+  const [customerId, setCustomerId] = React.useState('1');
+  const [loginPin, setLoginPin] = React.useState('123456');
+  const [pin, setPin] = React.useState('123456');
+  const [newPin, setNewPin] = React.useState('121212');
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const {
+    store: {
+      initGuard,
+      createPin,
+      login,
+      getSignedPin,
+      getDeviceId,
+      setRememberPinStatus,
+      changePin,
+      approveTransaction,
+      logout,
+      generateTOTP,
+      getMobileNotificationTransaction,
+      checkActivation,
+    },
+  } = useGuardSecure();
+
+  const onPressLogin = async () => {
+    const res = await login({
+      pin: loginPin,
+      customerId: '1',
+      rememberPinActive: false,
+      guardSdkVersion: '2.5.0'
+    });
+    setResponse(JSON.stringify(res));
+  };
+  const onPressCreatePin = async () => {
+    const res = await createPin({pin: '123456', customerId: '1'});
+    setResponse(JSON.stringify(res));
+  };
+  const onPressChangePin = async () => {
+    const res = await changePin({
+      pin: '123456',
+      newPin: '121212',
+      customerId: '1',
+    });
+    setResponse(JSON.stringify(res));
+  };
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.main}>
+      <Text style={styles.title}>GUARD</Text>
+
+      <TextInput
+        style={styles.customerIdInput}
+        value={customerId}
+        onChange={setCustomerId}
+        maxLength={8}
+      />
+
+      <View style={styles.buttonContainer}>
+        <View>
+          <Button onPress={onPressLogin} title="Login" />
+          <TextInput
+            style={styles.pinInput}
+            value={loginPin}
+            onChange={setLoginPin}
+            maxLength={8}
+          />
+        </View>
+
+        <View>
+          <Button onPress={onPressCreatePin} title="Create Pin" />
+          <TextInput
+            style={styles.pinInput}
+            value={pin}
+            onChange={setPin}
+            maxLength={8}
+          />
+        </View>
+        <View>
+          <Button onPress={onPressChangePin} title="Change Pin" />
+          <TextInput
+            style={styles.pinInput}
+            value={newPin}
+            onChange={setNewPin}
+            maxLength={8}
+          />
+        </View>
+      </View>
+
+      <View style={styles.responseContainer}>
+        <Text style={styles.responseText}>{response}</Text>
+      </View>
     </View>
   );
 };
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  main: {
+    flex: 1,
+    paddingTop: '20%',
   },
-  sectionTitle: {
+  title: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    width: '100%',
+    textAlign: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginVertical: 20,
+  },
+  responseContainer: {
+    flex: 1,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'red',
+  },
+  responseText: {
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: '600',
+    width: '100%',
+    textAlign: 'center',
   },
-  highlight: {
-    fontWeight: '700',
+
+  customerIdInput: {
+    borderWidth: 1,
+    borderColor: 'black',
+    width: '100%',
+    textAlign: 'center',
+  },
+  pinInput: {
+    borderWidth: 1,
+    borderColor: 'black',
+    width: 100,
+    textAlign: 'center',
   },
 });
 
