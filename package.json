@@ -11,8 +11,14 @@
   },
   "dependencies": {
     "@abtguard/guard": "^0.2.5",
+    "jail-monkey": "^2.8.0",
+    "mobx": "^6.9.0",
+    "mobx-react-lite": "^3.4.3",
     "react": "17.0.2",
-    "react-native": "0.68.5"
+    "react-native": "0.68.5",
+    "react-native-device-info": "^10.6.0",
+    "react-native-dropdownalert": "^4.5.1",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
