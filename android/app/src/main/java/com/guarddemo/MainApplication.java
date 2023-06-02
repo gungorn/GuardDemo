@@ -62,9 +62,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     //GUARD-INIT START
     Log.d("GUARD", "MainApplication onCreate initGuard START");
-    GuardNativeMethods guardNativeMethods = new GuardNativeMethods(getApplicationContext());
-    guardNativeMethods.initGuard();
-    Log.d("GUARD", "MainApplication onCreate initGuard END");
+    //GuardNativeMethods guardNativeMethods = new GuardNativeMethods(getApplicationContext());
+    //guardNativeMethods.initGuard();
+    //Log.d("GUARD", "MainApplication onCreate initGuard END");
     //GUARD-INIT END
   }
 

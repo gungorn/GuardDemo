@@ -57,10 +57,10 @@
   [self.window makeKeyAndVisible];
   
   //GUARD-INIT START
-  NSLog(@"initGuard START");
-  Guard *guard = [Guard new];
-  [guard initGuard];
-  NSLog(@"initGuard END");
+  //NSLog(@"initGuard START");
+  //Guard *guard = [Guard new];
+  //[guard initGuard];
+  //NSLog(@"initGuard END");
   //GUARD-INIT END
   
   return YES;

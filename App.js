@@ -26,6 +26,17 @@ const App = () => {
     },
   } = useGuardSecure();
 
+  const onPressInit = async () => {
+    setResponse('Please wait...');
+    try {
+      const res = await initGuard();
+      debugger;
+      setResponse(JSON.stringify(res));
+    } catch (error) {
+      setResponse('ERROR :/');
+    }
+  };
+
   const onPressLogin = async () => {
     setResponse('Please wait...');
     try {
@@ -75,6 +86,8 @@ const App = () => {
         maxLength={8}
       />
 
+      <Button onPress={onPressInit} title="JS INIT" />
+
       <View style={styles.buttonContainer}>
         <View>
           <Button onPress={onPressLogin} title="Login" />
@@ -95,6 +108,7 @@ const App = () => {
             maxLength={8}
           />
         </View>
+
         <View>
           <Button onPress={onPressApproveTransaction} title="Approve Trn." />
         </View>
@@ -110,13 +124,14 @@ const App = () => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    paddingTop: '20%',
+    paddingTop: '10%',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     width: '100%',
     textAlign: 'center',
+    marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -142,6 +157,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     width: '100%',
     textAlign: 'center',
+    marginBottom: 20,
   },
   pinInput: {
     borderWidth: 1,
