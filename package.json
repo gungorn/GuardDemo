@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@abtguard/guard": "^0.2.5",
+    "@abtguard/guard": "^0.2.8",
     "jail-monkey": "^2.8.0",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
