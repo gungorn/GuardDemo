@@ -8,6 +8,7 @@ const App = () => {
   const [loginPin, setLoginPin] = React.useState('123456');
   const [pin, setPin] = React.useState('123456');
   const [newPin, setNewPin] = React.useState('121212');
+  const [txPin, setTxPin] = React.useState('123456');
 
   const {
     store: {
@@ -30,21 +31,19 @@ const App = () => {
     setResponse('Please wait...');
     try {
       const res = await initGuard();
-      debugger;
       setResponse(JSON.stringify(res));
     } catch (error) {
       setResponse('ERROR :/');
     }
   };
-
   const onPressLogin = async () => {
     setResponse('Please wait...');
     try {
       const res = await login({
         pin: loginPin,
-        customerId: '1',
-        rememberPinActive: false,
-        guardSdkVersion: '2.5.0',
+        customerId,
+        //rememberPinActive: false,
+        //guardSdkVersion: '0.3.3',
       });
       setResponse(JSON.stringify(res));
     } catch (error) {
@@ -54,7 +53,7 @@ const App = () => {
   const onPressCreatePin = async () => {
     setResponse('Please wait...');
     try {
-      const res = await createPin({pin: '123456', customerId: '1'});
+      const res = await createPin({pin: pin, customerId});
       setResponse(JSON.stringify(res));
     } catch (error) {
       setResponse('ERROR :/');
@@ -64,10 +63,24 @@ const App = () => {
     setResponse('Please wait...');
     try {
       const res = await approveTransaction({
-        pin: '123456',
-        customerId: '1',
+        pin: txPin,
+        customerId,
         canceled: false,
+        isPinless: false,
         summaryData: "{ 'key': 'value' }",
+      });
+      setResponse(JSON.stringify(res));
+    } catch (error) {
+      setResponse('ERROR :/');
+    }
+  };
+  const onPressChangePin = async () => {
+    setResponse('Please wait...');
+    try {
+      const res = await changePin({
+        pin: pin,
+        customerId,
+        newPin: newPin,
       });
       setResponse(JSON.stringify(res));
     } catch (error) {
@@ -82,21 +95,13 @@ const App = () => {
       <TextInput
         style={styles.customerIdInput}
         value={customerId}
-        onChange={setCustomerId}
+        onChangeText={setCustomerId}
         maxLength={8}
       />
 
-      <Button onPress={onPressInit} title="JS INIT" />
-
       <View style={styles.buttonContainer}>
         <View>
-          <Button onPress={onPressLogin} title="Login" />
-          <TextInput
-            style={styles.pinInput}
-            value={loginPin}
-            onChange={setLoginPin}
-            maxLength={8}
-          />
+          <Button onPress={onPressInit} title="JS INIT" />
         </View>
 
         <View>
@@ -104,13 +109,39 @@ const App = () => {
           <TextInput
             style={styles.pinInput}
             value={pin}
-            onChange={setPin}
+            onChangeText={setPin}
+            maxLength={8}
+          />
+        </View>
+
+        <View>
+          <Button onPress={onPressLogin} title="Login" />
+          <TextInput
+            style={styles.pinInput}
+            value={loginPin}
+            onChangeText={setLoginPin}
             maxLength={8}
           />
         </View>
 
         <View>
           <Button onPress={onPressApproveTransaction} title="Approve Trn." />
+          <TextInput
+            style={styles.pinInput}
+            value={txPin}
+            onChangeText={setTxPin}
+            maxLength={8}
+          />
+        </View>
+
+        <View>
+          <Button onPress={onPressChangePin} title="CHANGEPIN" />
+          <TextInput
+            style={styles.pinInput}
+            value={newPin}
+            onChangeText={setNewPin}
+            maxLength={8}
+          />
         </View>
       </View>
 
@@ -124,20 +155,19 @@ const App = () => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    paddingTop: '10%',
+    paddingTop: '5%',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     width: '100%',
     textAlign: 'center',
-    marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    marginVertical: 20,
+    flexWrap: 'wrap',
   },
   responseContainer: {
     flex: 1,
@@ -158,12 +188,14 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     marginBottom: 20,
+    paddingVertical: 0,
   },
   pinInput: {
     borderWidth: 1,
     borderColor: 'black',
-    width: 100,
+    width: '100%',
     textAlign: 'center',
+    paddingVertical: 0,
   },
 });
 
